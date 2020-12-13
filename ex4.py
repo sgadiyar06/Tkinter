@@ -8,7 +8,11 @@ from tkinter import *
 
 def to_cel(fahr):
     c = (fahr-32) * 5/9
-    celsius.set(c)
+    converted.set(c)
+
+def to_fahr(cel):
+    f = (cel*9/5) + 32
+    converted.set(f)
 
 root = Tk()
 
@@ -17,19 +21,37 @@ frame.pack()
 frame2 = Frame(root)
 frame2.pack()
 
-celsius = IntVar()
-fahr = IntVar()
+value = IntVar()
+converted = IntVar()
 
-label2 = Label(frame,text='Enter the value in Fahrenheit')
+state = StringVar()
+
+state.set('Enter the value in Fahrenheit')
+temp = 'Fahr'
+
+def change_state():
+    global temp
+    if temp == 'Fahr':
+        state.set('Enter the value in Celsius')
+        temp = 'Cel'
+    else:
+        state.set('Enter the value in Fahrenheit')
+        temp = 'Fahr'
+
+
+label2 = Label(frame,textvar=state)
 label2.pack()
 
-entry = Entry(frame,textvar=fahr)
+entry = Entry(frame,textvar=value)
 entry.pack()
 
-label = Label(frame,textvar=celsius)
+label = Label(frame,textvar=converted)
 label.pack()
 
-convert = Button(frame2,text='Convert',command= lambda: to_cel(fahr.get()))
+change = Button(frame2,text='Change',command=change_state)
+change.pack()
+
+convert = Button(frame2,text='Convert',command= lambda: to_cel(value.get()) if temp=='Fahr' else to_fahr(value.get()) )
 convert.pack()
 stop = Button(frame2,text='Exit',command=root.destroy) 
 stop.pack()
